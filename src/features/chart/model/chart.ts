@@ -1,9 +1,9 @@
-import {makeAutoObservable, runInAction} from "mobx";
-import {fetchTimeSeriesIntraday} from "../api";
-import {IntradayRequest, TimeInterval, TimeSeries} from "../types";
+import {makeAutoObservable} from 'mobx';
+import {fetchCompanyTimeSeries} from '../api';
+import {StockPriceRequest, TimeInterval, StockPrice} from '../types';
 
-class Intraday {
-  data = null;
+class CompanyPrice {
+  data: null | StockPrice[] = null;
   loading = false;
   error: string | null = null;
 
@@ -11,35 +11,28 @@ class Intraday {
     makeAutoObservable(this);
   }
 
+  getTimeSeries = async () => {
+    if (!this.loading) {
+      this.loading = true;
 
-  getIntraday = async () => {
-    this.loading = true;
-    const API_KEY = process.env.REACT_APP_API_KEY as string;
+      const params: StockPriceRequest = {
+        company: 'IBM',
+        time: TimeInterval['60min'],
+      };
 
-    const params: IntradayRequest= {
-      apikey: API_KEY,
-      function: TimeSeries.TIME_SERIES_INTRADAY,
-      symbol: "IBM",
-      interval: TimeInterval["60min"]
-    }
+      try {
+        await fetchCompanyTimeSeries(params).then(response => {
 
-    try {
-      const data = await fetchTimeSeriesIntraday(params);
-
-      console.log(data);
-
-      runInAction(() => {
-        this.data = data;
+            this.data = response;
+            this.loading = false;
+            this.error = null;
+        });
+      } catch (err) {
         this.loading = false;
-        this.error = null;
-      });
-    } catch (err) {
-      this.loading = false;
-      console.log(err);
-      // this.error = err.response.data;
+        console.log(err);
+      }
     }
   };
-
 }
 
-export const intradayModel = new Intraday();
+export const stockPriceModel = new CompanyPrice();

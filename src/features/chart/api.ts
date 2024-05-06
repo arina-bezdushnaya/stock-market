@@ -1,8 +1,8 @@
 import {client} from '../../rest/client';
-import {IntradayRequest} from './types';
+import {StockPrice, StockPriceRequest} from './types';
 
-export async function fetchTimeSeriesIntraday(
-  params: IntradayRequest
-): Promise<any> {
-  return (await client.get(`query`, {params})).data;
+export async function fetchCompanyTimeSeries(
+  params: StockPriceRequest,
+): Promise<StockPrice[]> {
+  return (await client.get(`/api/stock`, {params})).data;
 }

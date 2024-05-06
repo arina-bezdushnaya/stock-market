@@ -1,13 +1,11 @@
-import axios from "axios";
+import axios from 'axios';
 
-const baseURL = 'https://www.alphavantage.co';
-
+const baseURL = 'https://stockmarket-platform.onrender.com';
 
 export const client = axios.create({
-  baseURL
+  baseURL,
 });
 
-
 client.interceptors.response.use(undefined, error => {
-  window.location.href = '/';
+  console.log(error.message);
 });
