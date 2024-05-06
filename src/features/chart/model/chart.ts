@@ -11,21 +11,15 @@ class CompanyPrice {
     makeAutoObservable(this);
   }
 
-  getTimeSeries = async () => {
+  getTimeSeries = async (params: StockPriceRequest) => {
     if (!this.loading) {
       this.loading = true;
 
-      const params: StockPriceRequest = {
-        company: 'IBM',
-        time: TimeInterval['60min'],
-      };
-
       try {
         await fetchCompanyTimeSeries(params).then(response => {
-
-            this.data = response;
-            this.loading = false;
-            this.error = null;
+          this.data = response;
+          this.loading = false;
+          this.error = null;
         });
       } catch (err) {
         this.loading = false;
