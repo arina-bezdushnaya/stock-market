@@ -1,55 +1,25 @@
 import React, {useEffect, useState} from 'react';
 import {observer} from 'mobx-react';
+import {toJS} from 'mobx';
 import type {RadioChangeEvent} from 'antd';
 import {ChartContainer} from './styled';
 import {stockPriceModel} from '../../features/chart/model/chart';
 import {Option, Select} from '../../shared/Select';
 import {RadioOption, RadioGroup} from '../../shared/RadioGroup';
 import {Chart} from '../../features/chart/ui';
-import {TimeInterval, StockPriceRequest} from '../../features/chart/types';
+import {TimeInterval} from '../../features/chart/types';
+import {getFromToDate} from '../../utils/date';
+import {Spin} from 'antd';
 
-const defaultParams: StockPriceRequest = {
-  company: 'IBM',
-  time: TimeInterval['1Y'],
-};
 
 export const Main = observer(() => {
   useEffect(() => {
-    stockPriceModel.getTimeSeries(defaultParams);
+    stockPriceModel.getCompanies();
   }, []);
 
-  // const citiesNames = ['NN', 'Moscow', 'Orsk'];
-  // const citiesOptions: Option[] = citiesNames.map(city => ({
-  //   value: city,
-  //   label: city,
-  // }));
+  const isLoading = stockPriceModel.loading;
 
-  // const getDepartments = (city: string) => {
-  //   const departments: string[] = [];
-
-  //   for (let i = 1; i <= city.length; i++) {
-  //     departments.push(String(i));
-  //   }
-
-  //   return departments;
-  // };
-
-  // const [currentCity, setCity] = useState(citiesNames[0]);
-  // const [departments, setDepartments] = useState(getDepartments(currentCity));
-
-  // const departmentsOptions: Option[] = departments.map(dep => ({
-  //   value: dep,
-  //   label: dep,
-  // }));
-
-  // const handleCityChange = (value: string) => {
-  //   setCity(value);
-  //   setDepartments(getDepartments(value));
-  // };
-
-  // const onDepartmentsChange = (department: string) => {
-  //   console.log(department);
-  // };
+  const [interval, setInterval] = useState('1d');
 
   const timeIntArray = Object.entries(TimeInterval);
   const timeOptions: RadioOption[] = timeIntArray.map(opt => ({
@@ -57,31 +27,54 @@ export const Main = observer(() => {
     title: opt[0],
   }));
 
-  console.log(timeOptions);
+  const companies = toJS(stockPriceModel.companies || []);
+  const companiesOptions: Option[] = companies.map(opt => ({
+    value: opt,
+    label: opt,
+  }));
+
+
+  useEffect(() => {
+    !currentCompany && setCompany(companies[0]);
+  }, [companies]);
+
+
+  const [currentCompany, setCompany] = useState('');
+
+  const handleCompanyChange = (value: string) => {
+    console.log(value);
+
+    setCompany(value);
+    const {from, to} = getFromToDate(interval);
+
+    stockPriceModel.getTimeSeries({company: value, from, to, interval});
+  };
+
 
   const onTimeChange = (e: RadioChangeEvent) => {
-    console.log(e.target.value);
-    stockPriceModel.getTimeSeries({...defaultParams, time: e.target.value});
+    setInterval(e.target.value);
+    const {from, to} = getFromToDate(e.target.value);
+
+    stockPriceModel.getTimeSeries({company: currentCompany, from, to, interval: e.target.value});
   };
 
   return (
-    <ChartContainer>
-      {/* <div onClick={() => stockPriceModel.getTimeSeries()}>City</div>
-      <Select
-        defaultValue={citiesOptions[0].value}
-        options={citiesOptions}
-        onChange={handleCityChange}
-        title={'dfgd'}
-      />
-      <div>Department</div>
-      <Select
-        defaultValue={getDepartments(citiesOptions[0].value)[0]}
-        options={departmentsOptions}
-        onChange={onDepartmentsChange}
-      /> */}
+    <>
+      {isLoading ?
+        <Spin size={'large'} /> :
+        <ChartContainer>
+          <Select
+            placeholder={'Select company'}
+            options={companiesOptions}
+            defaultValue={companiesOptions[0]?.value}
+            value={currentCompany}
+            onChange={handleCompanyChange}
+          />
 
-      <RadioGroup options={timeOptions} onChange={onTimeChange} />
-      <Chart />
-    </ChartContainer>
+          <RadioGroup options={timeOptions} onChange={onTimeChange} value={interval} />
+          <Chart />
+        </ChartContainer>
+      }
+    </>
   );
 });

@@ -8,15 +8,19 @@ export interface RadioOption {
 
 interface Props {
   options: RadioOption[];
+  value?: string;
   onChange: (value: RadioChangeEvent) => void;
 }
 
-export function RadioGroup({options, onChange}: Props) {
+export function RadioGroup({options, value, onChange}: Props) {
   return (
-    <Radio.Group onChange={onChange} defaultValue={options[0].value}>
+    <Radio.Group
+      onChange={onChange}
+      value={value}
+    >
       {options.map(({value, title}) => (
-        <Radio.Button key={value} value={value}>
-          <span title={value}>{title}</span>
+        <Radio.Button key={value} value={title}>
+          <span title={value}>{title.toUpperCase()}</span>
         </Radio.Button>
       ))}
     </Radio.Group>

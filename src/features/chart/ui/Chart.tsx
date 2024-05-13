@@ -1,6 +1,8 @@
 import React, {useEffect} from 'react';
-import {ChartContainer} from './styled';
+import {toJS} from 'mobx';
 import {observer} from 'mobx-react';
+import moment from 'moment';
+import {ChartContainer} from './styled';
 import {
   AreaChart,
   XAxis,
@@ -11,14 +13,15 @@ import {
   Area,
 } from 'recharts';
 import {stockPriceModel} from '../model/chart';
-import {toJS} from 'mobx';
 import {StockPrice} from '../types';
 import {formatDate, formatTime} from '../../../utils/date';
 
 export const Chart = observer(() => {
   let data: StockPrice[] = toJS(stockPriceModel.data) || [];
+  data.reverse();
 
-  useEffect(() => {}, [data]);
+  useEffect(() => {
+  }, [data]);
 
   return (
     <ChartContainer>
@@ -34,8 +37,14 @@ export const Chart = observer(() => {
             bottom: 0,
           }}
         >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="date" tickFormatter={label => formatDate(label)} />
+          <CartesianGrid strokeDasharray='3 3' />
+          <XAxis
+            // type={'number'}
+            dataKey='timestamp'
+            // domain={['dataMin', 'dataMax']}
+            tickFormatter={label => formatDate(label)}
+            // scale={'time'}
+          />
           <YAxis domain={['dataMin', 'dataMax']} />
           <Tooltip
             labelFormatter={label => (
@@ -46,9 +55,9 @@ export const Chart = observer(() => {
           />
 
           <defs>
-            <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor={'#ff5c00'} stopOpacity={0.4} />
-              <stop offset="75%" stopColor={'white'} stopOpacity={0.05} />
+            <linearGradient id='colorUv' x1='0' y1='0' x2='0' y2='1'>
+              <stop offset='0%' stopColor={'#ff5c00'} stopOpacity={0.4} />
+              <stop offset='75%' stopColor={'white'} stopOpacity={0.05} />
             </linearGradient>
             {/*<linearGradient id='colorPv' x1='0' y1='0' x2='0' y2='1'>*/}
             {/*  <stop offset='0%' stopColor={'blue'} stopOpacity={0.4} />*/}
@@ -57,12 +66,12 @@ export const Chart = observer(() => {
           </defs>
 
           <Area
-            type="monotone"
-            dataKey="open"
-            stroke="#ff5c00"
+            type='monotone'
+            dataKey='open'
+            stroke='#ff5c00'
             strokeWidth={3}
             fillOpacity={1}
-            fill="url(#colorUv)"
+            fill='url(#colorUv)'
           />
           {/*<Area type='monotone' dataKey='close' stroke='#ff5c00' strokeWidth={3} fillOpacity={1} fill='url(#colorPv)' />*/}
         </AreaChart>
