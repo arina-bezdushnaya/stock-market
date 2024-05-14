@@ -24,3 +24,8 @@ export interface StockPrice {
   close: string;
   volume: string;
 }
+
+export enum ChartType {
+  'Spline' = 'Spline',
+  'Candlestick' = 'Candlestick'
+}

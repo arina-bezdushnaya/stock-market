@@ -1,4 +1,4 @@
-// import {StyledHeader} from './styled';
+import {RadioGroupContainer} from './styled';
 import {Radio, RadioChangeEvent} from 'antd';
 
 export interface RadioOption {
@@ -14,15 +14,17 @@ interface Props {
 
 export function RadioGroup({options, value, onChange}: Props) {
   return (
-    <Radio.Group
-      onChange={onChange}
-      value={value}
-    >
-      {options.map(({value, title}) => (
-        <Radio.Button key={value} value={title}>
-          <span title={value}>{title.toUpperCase()}</span>
-        </Radio.Button>
-      ))}
-    </Radio.Group>
+    <RadioGroupContainer>
+      <Radio.Group
+        onChange={onChange}
+        value={value}
+      >
+        {options.map(({value, title}) => (
+          <Radio.Button key={value} value={title}>
+            <span title={value}>{title.toUpperCase()}</span>
+          </Radio.Button>
+        ))}
+      </Radio.Group>
+    </RadioGroupContainer>
   );
 }
