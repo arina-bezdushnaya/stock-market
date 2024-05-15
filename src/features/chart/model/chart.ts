@@ -1,7 +1,6 @@
 import {makeAutoObservable, runInAction} from 'mobx';
-import {fetchCompanies, fetchCompanyTimeSeries, fetchTimeSeriesIntraday} from '../api';
-import {StockPriceRequest, StockPrice} from '../types';
-import {getFromToDate} from '../../../utils/date';
+import {fetchCompanyTimeSeries, fetchTimeSeriesIntraday} from '../api';
+import {StockPriceRequest, StockPrice, TimeInterval} from '../types';
 
 export enum TimeSeries {
   'TIME_SERIES_INTRADAY' = 'TIME_SERIES_INTRADAY',
@@ -43,7 +42,7 @@ export interface IntradayRequest {
 
 class CompanyPrice {
   data: null | StockPrice[] = null;
-  companies: null | string[] = null;
+  interval: string = '1d';
   loading = false;
   error: string | null = null;
 
@@ -70,36 +69,10 @@ class CompanyPrice {
     }
   };
 
-  getCompanies = async () => {
-    if (!this.loading) {
-      this.loading = true;
 
-      try {
-        await fetchCompanies().then(response => {
-          runInAction(() => {
-            this.companies = response;
-            this.loading = false;
-            this.error = null;
-          });
-        });
-      } catch (err) {
-        this.loading = false;
-        console.log(err);
-      }
-
-      if (this.companies) {
-        const {from, to} = getFromToDate('1d');
-
-        this.getTimeSeries({
-          company: this.companies[0],
-          from,
-          to,
-          interval: '1d',
-        });
-      }
-    }
+  setInterval = (interval: TimeInterval) => {
+    this.interval = interval;
   };
-
 
   getIntraday = async () => {
     this.loading = true;

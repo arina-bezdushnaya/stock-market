@@ -1,25 +1,33 @@
 import moment, {DurationInputArg2} from 'moment';
 
 export function formatTime(date: string) {
-  return moment(date).format('HH:mm');
+  return moment.utc(date).format('HH:mm');
+}
+
+export function formatFullDate(date: string) {
+  return moment.utc(date).format('DD.MM.YYYY');
 }
 
 export function formatDate(date: string) {
-  return moment(date).format('DD.MM.YYYY');
+  return moment.utc(date).format('DD.MM');
 }
 
 export function formatDateTime(date: string) {
-  return moment(date).format('DD.MM HH:mm');
+  return moment.utc(date).format('DD.MM HH:mm');
 }
 
-export function formatFullDate(date?: string) {
-  return moment(date).format('YYYY-MM-DD HH:mm:ss');
+export function formatFullDateWithTime(date?: string) {
+  return moment.utc(date).format('YYYY-MM-DD HH:mm:ss');
 }
 
 export function formatMMM_YYYY(date: string) {
-  const result = moment(date.toString(), 'YYYYMM').format('MMM YYYY');
-  const year = moment(date.toString(), 'YYYYMM').year();
+  const result = moment(date).format('MMM YYYY');
+  const year = moment(date).year();
   return result[0].toLowerCase() + result.slice(1, 3) + ' ' + year;
+}
+
+export function formatMonth(date: string) {
+  return moment(date).format('MMM');
 }
 
 export function getFromToDate(interval: string): {from: string, to: string} {
