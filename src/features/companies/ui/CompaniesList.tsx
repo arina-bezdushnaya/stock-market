@@ -6,7 +6,7 @@ import {getFromToDate} from '../../../utils/date';
 import {companiesModel} from '../model';
 import {stockPriceModel} from '../../chart/model/chart';
 import {CompaniesContainer} from './styled';
-
+import {CompanyPrice} from './CompanyPrice';
 
 export const CompaniesList = observer(() => {
   const {
@@ -41,6 +41,8 @@ export const CompaniesList = observer(() => {
 
   return (
     <CompaniesContainer>
+      <CompanyPrice />
+
       <Select
         placeholder={'Select company'}
         options={companiesOptions}

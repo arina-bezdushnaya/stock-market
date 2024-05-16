@@ -1,6 +1,6 @@
 import {makeAutoObservable, runInAction} from 'mobx';
 import {fetchCompanyTimeSeries, fetchTimeSeriesIntraday} from '../api';
-import {StockPriceRequest, StockPrice, TimeInterval} from '../types';
+import {StockPriceRequest, StockPrice, TimeInterval, OHLC} from '../types';
 
 export enum TimeSeries {
   'TIME_SERIES_INTRADAY' = 'TIME_SERIES_INTRADAY',
@@ -43,6 +43,7 @@ export interface IntradayRequest {
 class CompanyPrice {
   data: null | StockPrice[] = null;
   interval: string = '1d';
+  type: string = 'open';
   loading = false;
   error: string | null = null;
 
@@ -72,6 +73,10 @@ class CompanyPrice {
 
   setInterval = (interval: TimeInterval) => {
     this.interval = interval;
+  };
+
+  setOHLCV = (type: string) => {
+    this.type = type;
   };
 
   getIntraday = async () => {

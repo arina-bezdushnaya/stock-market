@@ -27,5 +27,12 @@ export interface StockPrice {
 
 export enum ChartType {
   'Spline' = 'Spline',
-  'Candlestick' = 'Candlestick'
+  'Candlestick' = 'Candlestick',
+}
+
+export enum OHLC {
+  'open' = 'open',
+  'high' = 'high',
+  'low' = 'low',
+  'close' = 'close',
 }

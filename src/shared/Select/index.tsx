@@ -1,5 +1,7 @@
 import {Select as AndtSelect} from 'antd';
 import styled from 'styled-components/macro';
+import {SizeType} from 'antd/es/config-provider/SizeContext';
+import {color} from '../../theme';
 
 export interface Option {
   value: string;
@@ -13,6 +15,8 @@ interface Props {
   value: string;
   loading?: boolean;
   placeholder?: string;
+  size?: SizeType;
+  isSearch?: boolean;
 }
 
 export function Select({
@@ -22,6 +26,8 @@ export function Select({
                          defaultValue,
                          value,
                          loading = false,
+                         size = 'large',
+                         isSearch = true,
                        }: Props) {
   const onSearch = (value: string) => {
     console.log('search:', value);
@@ -36,7 +42,7 @@ export function Select({
   return (
     <SelectContainer>
       <AndtSelect
-        showSearch
+        showSearch={isSearch}
         placeholder={placeholder || 'Select a city'}
         loading={loading}
         disabled={loading}
@@ -47,6 +53,7 @@ export function Select({
         filterOption={filterOption}
         options={options}
         defaultValue={defaultValue}
+        size={size}
       />
     </SelectContainer>
   );

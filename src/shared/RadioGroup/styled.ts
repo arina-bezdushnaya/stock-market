@@ -12,7 +12,6 @@ export const RadioGroupContainer = styled.div`
 
       :not(:hover) {
         border: 1px solid ${color.grey};
-        border-right: none;
       }
     }
 

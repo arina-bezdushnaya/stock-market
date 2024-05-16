@@ -19,7 +19,7 @@ export function LayoutWrapper({children}: Props) {
     <StyledLayout>
       <StyledHeader>
         <Logo to={'/'}>
-          <img src={logo} alt='logo' width='60' height='56' />
+          <img src={logo} alt="logo" width="60" height="56" />
           <HeaderText>Stock Market</HeaderText>
         </Logo>
 

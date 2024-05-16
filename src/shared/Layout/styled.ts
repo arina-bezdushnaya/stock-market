@@ -52,4 +52,3 @@ export const StyledFooter = styled(Footer)`
   align-items: center;
   padding: 15px;
 `;
-

@@ -9,7 +9,6 @@ import {color} from './theme';
 ConfigProvider.config({
   theme: {
     primaryColor: color.primary,
-
   },
 });
 
