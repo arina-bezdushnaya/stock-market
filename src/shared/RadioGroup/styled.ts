@@ -1,7 +1,10 @@
 import styled from 'styled-components/macro';
 import {color} from '../../theme';
 
-export const RadioGroupContainer = styled.div`
+export const RadioGroupContainer = styled.div<{isRounded: boolean}>`
+  ${p =>
+    p.isRounded &&
+    `
   .ant-radio-button-wrapper {
     font-weight: 600;
     border: 1px solid ${color.grey};
@@ -32,4 +35,5 @@ export const RadioGroupContainer = styled.div`
       background: ${color.transparent};
     }
   }
+`}
 `;

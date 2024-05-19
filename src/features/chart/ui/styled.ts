@@ -1,5 +1,5 @@
 import styled from 'styled-components/macro';
-import {color} from '../../../theme';
+import {breakpoint, color} from '../../../theme';
 
 export const ChartContainer = styled.div`
   height: 320px;
@@ -17,23 +17,23 @@ export const Params = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-flow: row wrap;
+  gap: 8px;
 `;
 
 export const BlockWrapper = styled.div`
+  height: 100%;
+  width: 100%;
+  text-align: center;
   padding: 25px 30px;
   background: ${color.white};
   border-radius: 15px;
-`;
 
-export const OhlcvContainer = styled.div`
-  width: 100px;
-
-  .ant-select .ant-select-selection-item {
-    color: ${color.primary};
-    font-weight: 600;
+  @media (min-width: ${breakpoint.tablet}) {
+    width: 64%;
   }
 `;
 
-export const IntervalRadio = styled.div`
-  min-width: 360px;
+export const OhlcContainer = styled.div`
+  padding-top: 15px;
 `;

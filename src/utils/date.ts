@@ -30,15 +30,27 @@ export function formatMonth(date: string) {
   return moment(date).format('MMM');
 }
 
-export function getFromToDate(interval: string): {from: string, to: string} {
-  const amount = interval[0];
+export function formatDateSummary(date: string) {
+  return moment(date).format('MMM DD, YYYY');
+}
+
+export function getFromToDate(interval: string): {from: string; to: string} {
+  let amount = interval[0];
   const unit = interval[1] as DurationInputArg2;
 
-  return (
-    {
-      from: moment().subtract(amount, unit)
-        .format('YYYY-MM-DD HH:mm:ss'),
-      to: moment().format('YYYY-MM-DD HH:mm:ss'),
-    }
-  );
+  const dayOfWeek = moment().day();
+
+  if (dayOfWeek === 0) {
+    amount = '2';
+  }
+
+  const format =
+    interval === '1d' && (dayOfWeek === 6 || dayOfWeek === 0)
+      ? 'YYYY-MM-DD'
+      : 'YYYY-MM-DD HH:mm:ss';
+
+  return {
+    from: moment().subtract(amount, unit).format(format),
+    to: moment().format(format),
+  };
 }

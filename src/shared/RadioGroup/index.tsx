@@ -1,5 +1,6 @@
 import {RadioGroupContainer} from './styled';
 import {Radio, RadioChangeEvent} from 'antd';
+import {RadioGroupButtonStyle} from 'antd/es/radio';
 
 export interface RadioOption {
   value: string;
@@ -10,15 +11,20 @@ interface Props {
   options: RadioOption[];
   value?: string;
   onChange: (value: RadioChangeEvent) => void;
+  buttonStyle?: RadioGroupButtonStyle;
+  isRounded?: boolean;
 }
 
-export function RadioGroup({options, value, onChange}: Props) {
+export function RadioGroup({
+  options,
+  value,
+  buttonStyle = 'outline',
+  isRounded = false,
+  onChange,
+}: Props) {
   return (
-    <RadioGroupContainer>
-      <Radio.Group
-        onChange={onChange}
-        value={value}
-      >
+    <RadioGroupContainer isRounded={isRounded}>
+      <Radio.Group onChange={onChange} value={value} buttonStyle={buttonStyle}>
         {options.map(({value, title}) => (
           <Radio.Button key={value} value={title}>
             <span title={value}>{title.toUpperCase()}</span>

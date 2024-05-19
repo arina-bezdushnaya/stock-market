@@ -1,15 +1,14 @@
 import {Select as AndtSelect} from 'antd';
 import styled from 'styled-components/macro';
 import {SizeType} from 'antd/es/config-provider/SizeContext';
-import {color} from '../../theme';
 
-export interface Option {
+export interface SelectOption {
   value: string;
   label: string;
 }
 
 interface Props {
-  options: Option[];
+  options: SelectOption[];
   onChange: (value: string) => void;
   defaultValue?: string;
   value: string;

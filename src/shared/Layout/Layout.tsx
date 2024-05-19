@@ -1,10 +1,13 @@
 import {
-  StyledHeader,
+  HeaderWrapper,
+  Header,
   StyledLayout,
   HeaderText,
   Logo,
-  StyledFooter,
-  StyledContent,
+  FooterWrapper,
+  Footer,
+  Content,
+  ContentWrapper,
 } from './styled';
 import logo from '../../assets/images/stock-market.png';
 import React from 'react';
@@ -17,20 +20,26 @@ interface Props {
 export function LayoutWrapper({children}: Props) {
   return (
     <StyledLayout>
-      <StyledHeader>
-        <Logo to={'/'}>
-          <img src={logo} alt="logo" width="60" height="56" />
-          <HeaderText>Stock Market</HeaderText>
-        </Logo>
+      <HeaderWrapper>
+        <Header>
+          <Logo to={'/'}>
+            <img src={logo} alt="logo" width="60" height="56" />
+            <HeaderText>Stock Market</HeaderText>
+          </Logo>
 
-        <CompaniesList />
-      </StyledHeader>
+          <CompaniesList />
+        </Header>
+      </HeaderWrapper>
 
-      <StyledContent>{children}</StyledContent>
+      <ContentWrapper>
+        <Content>{children}</Content>
+      </ContentWrapper>
 
-      <StyledFooter>
-        <div>© 2023—{new Date().getFullYear()}, LLC «Stock Market Inc.»</div>
-      </StyledFooter>
+      <FooterWrapper>
+        <Footer>
+          <div>© 2023—{new Date().getFullYear()}, LLC «Stock Market Inc.»</div>
+        </Footer>
+      </FooterWrapper>
     </StyledLayout>
   );
 }

@@ -1,9 +1,9 @@
 export enum TimeInterval {
   '1y' = 'year',
-  '6M' = '6months',
-  '3M' = '3months',
+  '6M' = '6 months',
+  '3M' = '3 months',
   '1M' = 'month',
-  '2w' = '2weeks',
+  '2w' = '2 weeks',
   '1w' = 'week',
   '1d' = 'day',
 }

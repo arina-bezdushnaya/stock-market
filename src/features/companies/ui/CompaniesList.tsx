@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {toJS} from 'mobx';
 import {observer} from 'mobx-react';
-import {Option, Select} from '../../../shared/Select';
+import {SelectOption, Select} from '../../../shared/Select';
 import {getFromToDate} from '../../../utils/date';
 import {companiesModel} from '../model';
 import {stockPriceModel} from '../../chart/model/chart';
@@ -22,7 +22,7 @@ export const CompaniesList = observer(() => {
   }, []);
 
   const companies = toJS(companiesList || []);
-  const companiesOptions: Option[] = companies.map(opt => ({
+  const companiesOptions: SelectOption[] = companies.map(opt => ({
     value: opt,
     label: opt,
   }));
