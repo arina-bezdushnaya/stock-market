@@ -6,6 +6,7 @@ import {SummaryRow} from './SummaryRow';
 import {summaryModel} from '../model';
 import {companiesModel} from '../../companies/model';
 import {formatDateSummary} from '../../../utils/date';
+import {formatPrice} from '../../../utils/price';
 
 export const CompanySummary = observer(() => {
   const {summary, loading} = summaryModel;
@@ -29,7 +30,6 @@ export const CompanySummary = observer(() => {
   }
 
   const {
-    company,
     eps,
     beta,
     earningsDate,
@@ -46,10 +46,11 @@ export const CompanySummary = observer(() => {
     daysRange,
   } = summary;
 
-  const earnings = earningsDate
-    .map(date => formatDateSummary(date))
-    .join(' — ');
+  const earnings = earningsDate.map(date => formatDateSummary(date));
   const dividend = formatDateSummary(exDividendDate);
+
+  const getNumeralValue = (value: number | string) =>
+    formatPrice(value, false, true);
 
   return (
     <SummaryContainer>
@@ -57,30 +58,25 @@ export const CompanySummary = observer(() => {
         <></>
       ) : (
         <>
-          <>
-            <Title>Company Summary</Title>
-          </>
+          <Title>Company Summary</Title>
 
-          <>
-            {/*<SummaryRow title="Company" value={company} />*/}
-            <SummaryRow title="Previous close" value={previousClose} />
-            <SummaryRow title="Open" value={open} />
-            <SummaryRow title={`Day's Range`} value={daysRange.join(' — ')} />
-            <SummaryRow title="52 Week Range" value={week52Range.join(' — ')} />
-            <SummaryRow title="Volume" value={volume} />
-            <SummaryRow title="Avg. Volume" value={avgVolume} />
-            <SummaryRow title="Market Cap" value={marketCap} />
-            <SummaryRow title="Beta (5Y Monthly)" value={beta} />
-            <SummaryRow title="PE Ratio (TTM)" value={peRatio} />
-            <SummaryRow title="EPS (TTM)" value={eps} />
-            <SummaryRow title="Earnings Date" value={earnings} />
-            <SummaryRow
-              title="Forward Dividend & Yield"
-              value={forwardDividend}
-            />
-            <SummaryRow title="Ex-Dividend Date" value={dividend} />
-            <SummaryRow title="1y Target Est" value={targetEst} />
-          </>
+          <SummaryRow title="Previous close" value={previousClose} showPrice />
+          <SummaryRow title="Open" value={open} showPrice />
+          <SummaryRow title={`Day's Range`} value={daysRange} showPrice />
+          <SummaryRow title="52 Week Range" value={week52Range} showPrice />
+          <SummaryRow title="Volume" value={formatPrice(volume)} />
+          <SummaryRow title="Avg. Volume" value={formatPrice(avgVolume)} />
+          <SummaryRow title="Market Cap" value={marketCap} />
+          <SummaryRow title="Beta (5Y Monthly)" value={getNumeralValue(beta)} />
+          <SummaryRow title="PE Ratio (TTM)" value={getNumeralValue(peRatio)} />
+          <SummaryRow title="EPS (TTM)" value={getNumeralValue(eps)} />
+          <SummaryRow title="Earnings Date" value={earnings} />
+          <SummaryRow
+            title="Forward Dividend & Yield"
+            value={forwardDividend}
+          />
+          <SummaryRow title="Ex-Dividend Date" value={dividend} />
+          <SummaryRow title="1y Target Est" value={targetEst} showPrice />
         </>
       )}
     </SummaryContainer>

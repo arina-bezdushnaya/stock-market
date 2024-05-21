@@ -8,6 +8,11 @@ export const RowContainer = styled.div`
   justify-content: space-between;
   padding: 10px 0;
   border-bottom: 1px solid ${color.grey};
+
+  :last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
 `;
 
 export const Title = styled.div`

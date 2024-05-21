@@ -18,4 +18,15 @@ export interface CompanySummary {
   exDividendDate: string;
   targetEst: number;
   forwardDividend: string;
+  description: CompanyDescription;
+}
+
+export interface CompanyDescription {
+  fullName: string;
+  info: string;
+  link: string;
+  linkText: string;
+  employees: number;
+  industry: string;
+  sector: string;
 }
