@@ -1,5 +1,5 @@
 import styled from 'styled-components/macro';
-import {breakpoint, color} from '../../../theme';
+import {color} from '../../../theme';
 
 export const ChartContainer = styled.div`
   height: 320px;
@@ -22,16 +22,11 @@ export const Params = styled.div`
 `;
 
 export const BlockWrapper = styled.div`
-  height: 100%;
   width: 100%;
   text-align: center;
   padding: 25px 30px;
   background: ${color.white};
   border-radius: 15px;
-
-  @media (min-width: ${breakpoint.tablet}) {
-    width: 64%;
-  }
 `;
 
 export const OhlcContainer = styled.div`

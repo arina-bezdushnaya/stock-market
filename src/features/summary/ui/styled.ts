@@ -5,7 +5,6 @@ export const SummaryContainer = styled.div`
   width: 100%;
   display: flex;
   flex-flow: column nowrap;
-  //justify-content: space-between;
   padding: 25px 35px;
   background: ${color.white};
   border-radius: 15px;

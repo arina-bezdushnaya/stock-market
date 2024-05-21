@@ -1,10 +1,17 @@
 import React from 'react';
 import {observer} from 'mobx-react';
-import {Container, CompanyName, MainWrapper, TitleWrapper} from './styled';
+import {
+  Container,
+  CompanyName,
+  MainWrapper,
+  TitleWrapper,
+  Column,
+} from './styled';
 import {Chart} from '../../features/chart/ui';
 import {CompanySummary} from '../../features/summary/ui';
 import {summaryModel} from '../../features/summary/model';
 import {Skeleton} from 'antd';
+import {CompanyOverview} from '../../features/overview/ui';
 
 export const Main = observer(() => {
   const {summary, loading} = summaryModel;
@@ -23,7 +30,10 @@ export const Main = observer(() => {
         </TitleWrapper>
 
         <MainWrapper>
-          <Chart />
+          <Column>
+            <Chart />
+            <CompanyOverview />
+          </Column>
 
           <CompanySummary />
         </MainWrapper>

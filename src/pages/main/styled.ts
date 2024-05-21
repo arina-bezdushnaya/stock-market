@@ -34,3 +34,14 @@ export const CompanyName = styled.div`
   font-weight: 600;
   line-height: 32px;
 `;
+
+export const Column = styled.div`
+  width: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 20px;
+
+  @media (min-width: ${breakpoint.tablet}) {
+    width: 64%;
+  }
+`;
