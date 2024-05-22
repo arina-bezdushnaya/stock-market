@@ -4,7 +4,8 @@ import {Button} from 'antd';
 
 export const OverviewContainer = styled.div`
   width: 100%;
-  height: 100%;
+  // height: 100%;
+  // height: 700px;
   display: flex;
   flex-flow: column nowrap;
   padding: 25px 35px;

@@ -12,6 +12,7 @@ export const MainWrapper = styled.div`
   display: flex;
   flex-flow: column nowrap;
   justify-content: space-between;
+  align-items: flex-start;
   width: 100%;
   padding: 20px 0;
   gap: 20px;

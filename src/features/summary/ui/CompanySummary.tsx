@@ -22,7 +22,7 @@ export const CompanySummary = observer(() => {
         <Skeleton
           active
           paragraph={{
-            rows: 20,
+            rows: 24,
           }}
         />
       </SummaryContainer>
