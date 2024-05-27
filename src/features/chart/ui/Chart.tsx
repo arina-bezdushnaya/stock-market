@@ -49,14 +49,16 @@ export const Chart = observer(() => {
         )}
       </ChartContainer>
 
-      <OhlcContainer>
-        <RadioGroup
-          options={ohlcOptions}
-          onChange={onOhlcvTypeChange}
-          value={stockPriceModel.type}
-          buttonStyle={'solid'}
-        />
-      </OhlcContainer>
+      {chartType === ChartType.Spline && (
+        <OhlcContainer>
+          <RadioGroup
+            options={ohlcOptions}
+            onChange={onOhlcvTypeChange}
+            value={stockPriceModel.type}
+            buttonStyle={'solid'}
+          />
+        </OhlcContainer>
+      )}
     </BlockWrapper>
   );
 });

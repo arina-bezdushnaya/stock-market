@@ -14,7 +14,7 @@ export const MainWrapper = styled.div`
   justify-content: space-between;
   align-items: flex-start;
   width: 100%;
-  padding: 20px 0;
+  padding: 20px 0 10px;
   gap: 20px;
 
   @media (min-width: ${breakpoint.tablet}) {
@@ -34,6 +34,7 @@ export const CompanyName = styled.div`
   font-size: 20px;
   font-weight: 600;
   line-height: 32px;
+  padding-left: 35px;
 `;
 
 export const Column = styled.div`

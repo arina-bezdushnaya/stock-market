@@ -1,91 +1,112 @@
-import React, {useEffect} from 'react';
-// import {toJS} from 'mobx';
+import React from 'react';
 import {observer} from 'mobx-react';
 import {
   XAxis,
   YAxis,
   CartesianGrid,
-  ResponsiveContainer, Bar, BarChart, Cell,
+  ResponsiveContainer,
+  Bar,
+  BarChart,
+  Cell,
 } from 'recharts';
-// import {stockPriceModel} from '../../model/chart';
-// import {StockPrice} from '../../types';
+import {StockPrice} from '../../types';
+import {toJS} from 'mobx';
+import {stockPriceModel} from '../../model/chart';
+import {getDateLabel} from '../AreaChart/AreaChart';
+import {color} from '../../../../theme';
 
 export const CandleStickBarChart = observer(() => {
-  // let data: StockPrice[] = toJS(stockPriceModel.data) || [];
-  // data.reverse();
-  //
-  // useEffect(() => {
-  // }, [data]);
-  //
+  let data: StockPrice[] = toJS(stockPriceModel.data) || [];
+  data.reverse();
 
-  const colors = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', 'red', 'pink'];
+  console.log(data);
 
-  const data = [
-    {
-      name: 'Page A',
-      uv: 4000,
-      pv: 2400,
-      amt: 2400,
-    },
-    {
-      name: 'Page B',
-      uv: 3000,
-      pv: 1398,
-      amt: 2210,
-    },
-    {
-      name: 'Page C',
-      uv: 2000,
-      pv: 9800,
-      amt: 2290,
-    },
-    {
-      name: 'Page D',
-      uv: 2780,
-      pv: 3908,
-      amt: 2000,
-    },
-    {
-      name: 'Page E',
-      uv: 1890,
-      pv: 4800,
-      amt: 2181,
-    },
-    {
-      name: 'Page F',
-      uv: 2390,
-      pv: 3800,
-      amt: 2500,
-    },
-    {
-      name: 'Page G',
-      uv: 3490,
-      pv: 4300,
-      amt: 2100,
-    },
-  ];
-
-  const getPath = (props: any) => {
-    const {x, y, width, height} = props;
-
-    return `M${x},${y + height}C${x + width / 3},${y + height} ${x + width / 2},${y + height / 3}
-  ${x + width / 2}, ${y}
-  C${x + width / 2},${y + height / 3} ${x + (2 * width) / 3},${y + height} ${x + width}, ${y + height}
-  Z`;
+  const prepareData = (data: StockPrice[]) => {
+    return data.map(({open, close, low, high, ...other}) => {
+      return {
+        ...other,
+        OHLC: [open, high, low, close],
+      };
+    });
   };
 
-  const TriangleBar = (props: any) => {
-    const {fill, x, y, width, height} = props;
+  const CandleStick = (props: any) => {
+    const {x, y, height, width, OHLC} = props;
+    const [open, high, low, close] = OHLC;
+    // const x = 80;
+    // const y = 0;
+    // const width = 10;
+    // const height = 10;
+    // const open = 0;
+    // const high = 0;
+    // const low = 0;
+    // const close = 0;
 
-    return <path d={getPath({x, y, width, height})} stroke='none' fill={fill} />;
+    const isGrowing = open < close;
+
+    console.log(x, y, height);
+
+    const color = isGrowing ? 'green' : 'red';
+    const ratio = Math.abs(height / (open - close));
+
+    return (
+      <g stroke={color} fill={color} strokeWidth="2">
+        <path
+          d={`
+          M ${x},${y}
+          L ${x},${y + height}
+          L ${x + width},${y + height}
+          L ${x + width},${y}
+          L ${x},${y}
+        `}
+        />
+        {/* bottom line */}
+        {isGrowing ? (
+          <path
+            d={`
+            M ${x + width / 2}, ${y + height}
+            v ${(open - low) * ratio}
+          `}
+          />
+        ) : (
+          <path
+            d={`
+            M ${x + width / 2}, ${y}
+            v ${(close - low) * ratio}
+          `}
+          />
+        )}
+        {/* top line */}
+        {isGrowing ? (
+          <path
+            d={`
+            M ${x + width / 2}, ${y}
+            v ${(close - high) * ratio}
+          `}
+          />
+        ) : (
+          <path
+            d={`
+            M ${x + width / 2}, ${y + height}
+            v ${(open - high) * ratio}
+          `}
+          />
+        )}
+      </g>
+    );
   };
+
+  const isYearly =
+    stockPriceModel.interval === '1y' || stockPriceModel.interval === '6M';
+
+  const dataForCandleStick = prepareData(data);
 
   return (
     <ResponsiveContainer>
       <BarChart
         width={500}
         height={300}
-        data={data}
+        data={dataForCandleStick}
         margin={{
           top: 20,
           right: 30,
@@ -93,14 +114,16 @@ export const CandleStickBarChart = observer(() => {
           bottom: 5,
         }}
       >
-        <CartesianGrid strokeDasharray='3 3' />
-        <XAxis dataKey='name' />
-        <YAxis />
-        <Bar dataKey='uv' fill='#8884d8' shape={<TriangleBar />} label={{position: 'top'}}>
-          {data.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={colors[index % 20]} />
-          ))}
-        </Bar>
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis
+          dataKey="timestamp"
+          tickFormatter={getDateLabel}
+          minTickGap={isYearly ? 40 : 20}
+          tickMargin={15}
+          allowDuplicatedCategory={false}
+        />
+        <YAxis domain={['dataMin', 'dataMax']} />
+        <Bar dataKey="OHLC" fill={color.primary} shape={<CandleStick />} />
       </BarChart>
     </ResponsiveContainer>
   );

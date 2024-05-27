@@ -14,7 +14,8 @@ export const StyledLayout = styled(Layout)`
   box-sizing: border-box;
   margin: 0 auto;
   background-image: url('${Img}');
-  background-size: cover;
+  background-size: 100%;
+  background-repeat: repeat-y;
 `;
 
 export const HeaderWrapper = styled(AndtHeader)`
@@ -46,7 +47,7 @@ export const Header = styled.div`
 export const HeaderText = styled.div`
   display: none;
   padding-left: 15px;
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 600;
   color: ${color.black};
 
@@ -74,10 +75,10 @@ export const ContentWrapper = styled(AntdContent)`
 
 export const Content = styled.div`
   width: 100%;
+  min-height: calc(100vh - 134px);
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
-  align-items: center;
   padding: 0 25px;
   background-color: rgb(237, 237, 241);
 
@@ -97,14 +98,29 @@ export const FooterWrapper = styled(AntdFooter)`
 
 export const Footer = styled.div`
   width: 100%;
+  height: 70px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: ${color.white};
   padding: 0 25px;
+  font-size: 16px;
 
   @media (min-width: ${breakpoint.desktop}) {
     width: ${breakpoint.desktop};
   }
+`;
+
+export const Links = styled.div`
+  display: flex;
+
+  svg {
+    margin: 0 10px;
+    cursor: pointer;
+  }
+`;
+
+export const Copyright = styled.div`
+  display: flex;
 `;

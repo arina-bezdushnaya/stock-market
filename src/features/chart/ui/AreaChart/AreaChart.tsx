@@ -61,7 +61,7 @@ export const AreaChart = observer(() => {
         <defs>
           <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor={color.primary} stopOpacity={0.4} />
-            <stop offset="75%" stopColor={'white'} stopOpacity={0.05} />
+            <stop offset="90%" stopColor={'white'} stopOpacity={0.05} />
           </linearGradient>
         </defs>
 
@@ -78,7 +78,7 @@ export const AreaChart = observer(() => {
   );
 });
 
-const getDateLabel = (date: string) => {
+export const getDateLabel = (date: string) => {
   const interval = stockPriceModel.interval;
 
   switch (interval) {

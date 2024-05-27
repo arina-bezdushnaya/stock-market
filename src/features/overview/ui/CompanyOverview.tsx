@@ -1,13 +1,14 @@
 import React, {useState} from 'react';
 import {observer} from 'mobx-react';
-import {Skeleton} from 'antd';
+import {Skeleton, Tag} from 'antd';
 import {
   OverviewContainer,
   OverviewMain,
   OverviewTitle,
   CompanyDescription,
-  OverviewColumn,
   ShowMoreButton,
+  Link,
+  Tags,
 } from './styled';
 import {summaryModel} from '../../summary/model';
 
@@ -34,23 +35,22 @@ export const CompanyOverview = observer(() => {
       <OverviewTitle>{fullName} Overview</OverviewTitle>
 
       <OverviewMain>
-        <OverviewColumn>
-          <CompanyDescription>
-            {shortInfo}
-            {!isShowAll && '...'}
-            <ShowMoreButton onClick={() => toggleShowAll(!isShowAll)}>
-              {isShowAll ? 'Свернуть' : 'Показать полностью'}
-            </ShowMoreButton>
-          </CompanyDescription>
-          <a href={link} target={'_blank'} rel={'noopener noreferrer'}>
-            {linkText}
-          </a>
-        </OverviewColumn>
-        <OverviewColumn>
-          <div>Full Time Employees: {employees}</div>
-          <div>Sector: {sector}</div>
-          <div>Industry: {industry}</div>
-        </OverviewColumn>
+        <Tags>
+          <Tag color="warning">{employees + ' full-time employees'}</Tag>
+          <Tag color="processing">{sector + ' sector'}</Tag>
+          <Tag color="success">{industry + ' industry'}</Tag>
+        </Tags>
+
+        <CompanyDescription>
+          {shortInfo}
+          {!isShowAll && '...'}
+          <ShowMoreButton onClick={() => toggleShowAll(!isShowAll)}>
+            {isShowAll ? 'Свернуть' : 'Показать полностью'}
+          </ShowMoreButton>
+        </CompanyDescription>
+        <Link href={link} target={'_blank'} rel={'noopener noreferrer'}>
+          {linkText}
+        </Link>
       </OverviewMain>
     </OverviewContainer>
   );

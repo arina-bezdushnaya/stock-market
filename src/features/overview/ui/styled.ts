@@ -4,8 +4,6 @@ import {Button} from 'antd';
 
 export const OverviewContainer = styled.div`
   width: 100%;
-  // height: 100%;
-  // height: 700px;
   display: flex;
   flex-flow: column nowrap;
   padding: 25px 35px;
@@ -21,25 +19,26 @@ export const OverviewTitle = styled.div`
 
 export const OverviewMain = styled.div`
   display: flex;
-  gap: 30px;
-`;
-
-export const OverviewColumn = styled.div`
-  display: flex;
   flex-flow: column nowrap;
-  width: 60%;
-
-  :last-child {
-    width: 40%;
-  }
 `;
 
 export const CompanyDescription = styled.div`
   display: flex;
   flex-flow: column nowrap;
+  text-align: justify;
 `;
 
 export const ShowMoreButton = styled(Button)`
-  width: 100px;
+  width: 200px;
   height: 30px;
+  margin: 10px 0 20px;
+`;
+
+export const Link = styled.a`
+  font-weight: 600;
+`;
+
+export const Tags = styled.div`
+  display: flex;
+  padding: 10px 0;
 `;
