@@ -7,19 +7,18 @@ import {
   ResponsiveContainer,
   Bar,
   BarChart,
-  Cell,
+  Tooltip,
 } from 'recharts';
 import {StockPrice} from '../../types';
 import {toJS} from 'mobx';
 import {stockPriceModel} from '../../model/chart';
 import {getDateLabel} from '../AreaChart/AreaChart';
 import {color} from '../../../../theme';
+import {formatDate, formatTime} from '../../../../utils/date';
 
 export const CandleStickBarChart = observer(() => {
   let data: StockPrice[] = toJS(stockPriceModel.data) || [];
   data.reverse();
-
-  console.log(data);
 
   const prepareData = (data: StockPrice[]) => {
     return data.map(({open, close, low, high, ...other}) => {
@@ -30,65 +29,85 @@ export const CandleStickBarChart = observer(() => {
     });
   };
 
+  const dataForCandleStick = prepareData(data);
+
+  const minValue = dataForCandleStick.reduce(
+    (minValue, {OHLC: [open, high, low, close]}) => {
+      const currentMin = Math.min(+low, +open, +close);
+      return minValue === 0 || currentMin < minValue ? currentMin : minValue;
+    },
+    0
+  );
+  const maxValue = dataForCandleStick.reduce(
+    (maxValue, {OHLC: [open, high, low, close]}) => {
+      const currentMax = Math.max(+high, +open, +close);
+      return currentMax > maxValue ? currentMax : maxValue;
+    },
+    minValue
+  );
+
   const CandleStick = (props: any) => {
-    const {x, y, height, width, OHLC} = props;
-    const [open, high, low, close] = OHLC;
-    // const x = 80;
-    // const y = 0;
-    // const width = 10;
-    // const height = 10;
-    // const open = 0;
-    // const high = 0;
-    // const low = 0;
-    // const close = 0;
+    const {
+      x,
+      width,
+      OHLC: [open, high, low, close],
+    } = props;
 
     const isGrowing = open < close;
 
-    console.log(x, y, height);
-
     const color = isGrowing ? 'green' : 'red';
-    const ratio = Math.abs(height / (open - close));
+    const ratio = 265 / (maxValue - minValue);
+
+    const getY = (y: number) => (maxValue - y) * ratio + 20;
+    const heightY = (close - open) * ratio;
+
+    const closeY = getY(close);
+    const openY = getY(open);
+    const highY = getY(high);
+    const lowY = getY(low);
 
     return (
-      <g stroke={color} fill={color} strokeWidth="2">
+      <g stroke={color} fill={color} strokeWidth="1">
         <path
           d={`
-          M ${x},${y}
-          L ${x},${y + height}
-          L ${x + width},${y + height}
-          L ${x + width},${y}
-          L ${x},${y}
+          M ${x},${closeY}
+          L ${x},${closeY + heightY}
+          L ${x + width},${closeY + heightY}
+          L ${x + width},${closeY}
+          L ${x},${closeY}
         `}
         />
+
         {/* bottom line */}
         {isGrowing ? (
           <path
             d={`
-            M ${x + width / 2}, ${y + height}
-            v ${(open - low) * ratio}
+            M ${x + width / 2}, ${closeY + heightY}
+            L ${x + width / 2},${lowY}
           `}
           />
         ) : (
           <path
             d={`
-            M ${x + width / 2}, ${y}
-            v ${(close - low) * ratio}
+            M ${x + width / 2}, ${closeY}
+            L ${x + width / 2},${lowY}
           `}
           />
         )}
+
         {/* top line */}
         {isGrowing ? (
           <path
             d={`
-            M ${x + width / 2}, ${y}
-            v ${(close - high) * ratio}
+            M ${x + width / 2}, ${openY}
+            L ${x + width / 2},${highY}
           `}
           />
         ) : (
           <path
             d={`
-            M ${x + width / 2}, ${y + height}
-            v ${(open - high) * ratio}
+            M ${x + width / 2}, ${openY + heightY}
+            L ${x + width / 2},${highY}
           `}
           />
         )}
@@ -98,8 +117,7 @@ export const CandleStickBarChart = observer(() => {
 
   const isYearly =
     stockPriceModel.interval === '1y' || stockPriceModel.interval === '6M';
-
-  const dataForCandleStick = prepareData(data);
+  const isShowTime = !(isYearly || stockPriceModel.interval === '3M');
 
   return (
     <ResponsiveContainer>
@@ -122,7 +140,26 @@ export const CandleStickBarChart = observer(() => {
           tickMargin={15}
           allowDuplicatedCategory={false}
         />
-        <YAxis domain={['dataMin', 'dataMax']} />
+        <YAxis domain={[minValue, maxValue]} />
+
+        <Tooltip
+          shared={false}
+          wrapperStyle={{outline: 'none'}}
+          formatter={value => {
+            const [open, high, low, close] = value as string[];
+
+            return `${open}, ${high}, ${low}, ${close}`;
+          }}
+          labelFormatter={label => {
+            return (
+              <span>
+                Date: {formatDate(label)}{' '}
+                {isShowTime && `Time: ${formatTime(label)}`}
+              </span>
+            );
+          }}
+        />
+
         <Bar dataKey="OHLC" fill={color.primary} shape={<CandleStick />} />
       </BarChart>
     </ResponsiveContainer>
