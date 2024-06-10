@@ -1,7 +1,6 @@
 import {SwitchContainer} from './styled';
 import {Switch as SwitchAntd} from 'antd';
 import {ChartType} from '../../features/chart/types';
-import React from 'react';
 
 interface Props {
   value?: string;

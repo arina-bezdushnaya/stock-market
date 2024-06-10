@@ -3,10 +3,9 @@ import {
   Header as AndtHeader,
   Footer as AntdFooter,
   Content as AntdContent,
-} from 'antd/es/layout/layout';
+} from 'antd/lib/layout/layout';
 import styled from 'styled-components/macro';
 import {breakpoint, color} from '../../theme';
-import {Link} from 'react-router-dom';
 import Img from '../../assets/images/background.jpg';
 
 export const StyledLayout = styled(Layout)`
@@ -42,25 +41,6 @@ export const Header = styled.div`
   @media (min-width: ${breakpoint.desktop}) {
     width: ${breakpoint.desktop};
   }
-`;
-
-export const HeaderText = styled.div`
-  display: none;
-  padding-left: 15px;
-  font-size: 22px;
-  font-weight: 600;
-  color: ${color.black};
-
-  @media (min-width: ${breakpoint.desktop}) {
-    display: flex;
-  }
-`;
-
-export const Logo = styled(Link)`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  text-decoration: none;
 `;
 
 export const ContentWrapper = styled(AntdContent)`

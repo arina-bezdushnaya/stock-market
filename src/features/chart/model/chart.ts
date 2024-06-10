@@ -6,7 +6,7 @@ export enum TimeSeries {
   'TIME_SERIES_INTRADAY' = 'TIME_SERIES_INTRADAY',
   'TIME_SERIES_DAILY' = 'TIME_SERIES_DAILY',
   'TIME_SERIES_MONTHLY' = 'TIME_SERIES_MONTHLY',
-  'TIME_SERIES_WEEKLY' = 'TIME_SERIES_WEEKLY'
+  'TIME_SERIES_WEEKLY' = 'TIME_SERIES_WEEKLY',
 }
 
 export enum TInterval {
@@ -14,17 +14,17 @@ export enum TInterval {
   '5min' = '5min',
   '15min' = '15min',
   '30min' = '30min',
-  '60min' = '60min'
+  '60min' = '60min',
 }
 
 export enum Outputsize {
   'compact' = 'compact',
-  'full' = 'full'
+  'full' = 'full',
 }
 
 export enum Datatype {
   'json' = 'json',
-  'csv' = 'csv'
+  'csv' = 'csv',
 }
 
 export interface IntradayRequest {
@@ -38,7 +38,6 @@ export interface IntradayRequest {
   datatype?: Datatype;
   apikey: string;
 }
-
 
 class CompanyPrice {
   data: null | StockPrice[] = null;
@@ -70,7 +69,6 @@ class CompanyPrice {
     }
   };
 
-
   setInterval = (interval: TimeInterval) => {
     this.interval = interval;
   };
@@ -86,10 +84,10 @@ class CompanyPrice {
     const params: IntradayRequest = {
       apikey: API_KEY,
       function: TimeSeries.TIME_SERIES_INTRADAY,
-      symbol: 'AAPL',
+      symbol: 'WMT',
       interval: TInterval['60min'],
       outputsize: Outputsize.full,
-      // month: '2023-05',
+      month: '2025-05',
       datatype: Datatype.csv,
     };
 
@@ -109,7 +107,6 @@ class CompanyPrice {
       // this.error = err.response.data;
     }
   };
-
 }
 
 export const stockPriceModel = new CompanyPrice();

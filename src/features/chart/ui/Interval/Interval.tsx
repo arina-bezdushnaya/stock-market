@@ -1,4 +1,3 @@
-import React from 'react';
 import {observer} from 'mobx-react';
 import {stockPriceModel} from '../../model/chart';
 import {IntervalRadio, IntervalSelect, IntervalContainer} from './styled';

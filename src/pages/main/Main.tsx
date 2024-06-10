@@ -1,4 +1,3 @@
-import React from 'react';
 import {observer} from 'mobx-react';
 import {
   Container,
@@ -31,7 +30,7 @@ export const Main = observer(() => {
 
         <MainWrapper>
           <Column>
-            <Chart />
+            {/*<Chart />*/}
             <CompanyOverview />
           </Column>
 

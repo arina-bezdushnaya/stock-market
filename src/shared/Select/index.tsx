@@ -1,5 +1,5 @@
 import {Select as AndtSelect} from 'antd';
-import styled from 'styled-components/macro';
+import {SelectContainer} from './styled';
 import {SizeType} from 'antd/es/config-provider/SizeContext';
 
 export interface SelectOption {
@@ -19,24 +19,23 @@ interface Props {
 }
 
 export function Select({
-                         options,
-                         placeholder,
-                         onChange,
-                         defaultValue,
-                         value,
-                         loading = false,
-                         size = 'large',
-                         isSearch = true,
-                       }: Props) {
-  const onSearch = (value: string) => {
-    console.log('search:', value);
-  };
+  options,
+  placeholder,
+  onChange,
+  defaultValue,
+  value,
+  loading = false,
+  size = 'large',
+  isSearch = true,
+}: Props) {
+  // const onSearch = (value: string) => {
+  //   console.log('search:', value);
+  // };
 
   const filterOption = (
     input: string,
-    option?: {label: string; value: string},
+    option?: {label: string; value: string}
   ) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
-
 
   return (
     <SelectContainer>
@@ -45,10 +44,10 @@ export function Select({
         placeholder={placeholder || 'Select a city'}
         loading={loading}
         disabled={loading}
-        optionFilterProp='children'
+        optionFilterProp="children"
         value={value}
         onChange={onChange}
-        onSearch={onSearch}
+        // onSearch={onSearch}
         filterOption={filterOption}
         options={options}
         defaultValue={defaultValue}
@@ -57,9 +56,3 @@ export function Select({
     </SelectContainer>
   );
 }
-
-export const SelectContainer = styled.div`
-  .ant-select {
-    width: 100%;
-  }
-`;

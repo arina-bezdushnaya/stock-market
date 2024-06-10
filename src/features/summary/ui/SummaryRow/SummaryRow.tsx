@@ -1,4 +1,3 @@
-import React from 'react';
 import {observer} from 'mobx-react';
 import {RowContainer, Title, Value} from './styled';
 import {formatPrice} from '../../../../utils/price';

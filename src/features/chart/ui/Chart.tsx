@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {toJS} from 'mobx';
 import {observer} from 'mobx-react';
 import {ChartContainer, BlockWrapper, OhlcContainer, Params} from './styled';
